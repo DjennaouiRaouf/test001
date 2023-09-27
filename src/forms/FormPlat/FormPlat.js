@@ -60,7 +60,7 @@ const FormPlat = () => {
         pref.current.value=null;
         setSelectedPays(0);
         setRecette("");
-
+        navigate("/l")
 
 
     }
