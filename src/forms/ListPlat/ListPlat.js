@@ -73,12 +73,14 @@ const ListPlat = () => {
                             className="card-img-top w-100 d-block fit-cover"
                             style={{ height: 200 }}
                             src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
+                            alt={""}
                         />
                         :
                         <img
                             className="card-img-top w-100 d-block fit-cover"
                             height={200}
                             src= {`${process.env.REACT_APP_API_BASE_URL}`+item.photo}
+                            alt={""}
                         />
                   }
 

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {setIdPays, setNom, setPhoto, setRecette, update_modal} from "../../redux-toolkit/slices/EditPlatSlice";
+import {setIdPays, setNom, setRecette, update_modal} from "../../redux-toolkit/slices/EditPlatSlice";
 
 const EditPlat = () => {
 
@@ -81,12 +81,14 @@ const EditPlat = () => {
                           className="mb-4 mt-4 text-center"
                           style={{ width: "100%", height: 200 }}
                           src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
+                          alt={""}
                       />
                       :
                       <img
                           className="mb-4 mt-4 text-center"
                           style={{ width: "100%", height: 200 }}
                           src={`${process.env.REACT_APP_API_BASE_URL}`+photo}
+                          alt={""}
                       />
 
               }
