@@ -14,7 +14,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<FormPlat/>} />
-                <Route path="/l" element={ <ListPlat/>} />
+
 
 
             </Routes>

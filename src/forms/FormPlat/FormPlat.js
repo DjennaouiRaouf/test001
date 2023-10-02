@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import ListPlat from "../ListPlat";
 
 const FormPlat = () => {
     const[nomPlat,setNomPlat]=useState("");
@@ -61,7 +62,7 @@ const FormPlat = () => {
         pref.current.value=null;
         setSelectedPays(0);
         setRecette("");
-        navigate("/l");
+
 
 
     }
@@ -69,48 +70,56 @@ const FormPlat = () => {
     useEffect(() => {
         getPays();
 
-    },[pays]);
+    });
   return (
      <>
-       <div className="container" style={{ marginTop: 52 }}>
-           <h1 className="text-center mb-4">
-               <strong>
-                   <em>
-                       <span style={{ textDecoration: "underline",display:"none" }}>Ajouter un Plat</span>
-                   </em>
-               </strong>
-           </h1>
-            <input className="form-control mb-4" type="text" placeholder="Nom du plat" value={nomPlat} onChange={handleNomPlatChange}/>
-            <input className="form-control mb-4" type="file"  ref={pref}  onChange={(e)=>handleFileUpload(e)}/>
-            <select className="form-control mb-4" value={selectedPays} onChange={handleSelectChange}>
-               <option value={0}>Select an option</option>
-               {pays.map((p,index) => (
-                   <option key={index} value={p.id}>
-                       {p.nom+"/"+p.capitale}
-                   </option>
-               ))}
-            </select>
-           <div className="container mb-4">
-               <textarea
-                   className="form-control"
-                   style={{ width: "100%", height: 115, resize: "none" }}
-                   value={recette}
-                   onChange={(e)=>handleTextChange(e)}
-               />
-           </div>
-           <div className="container">
-               <div className="row">
-                   <div className="col-md-6 text-center mt-4">
-                       <button className="btn btn-primary" type="button" onClick={()=>addPlat()}>
-                           Ajouter un Plat
-                       </button>
-                   </div>
-               </div>
-           </div>
-           <div className="container mt-4 mb-4">
-
-           </div>
-       </div>
+         <div className="container-fluid">
+             <div className="d-sm-flex justify-content-between align-items-center mb-4" />
+             <div>
+                 <div className="card shadow mb-3">
+                     <div className="card-header py-3">
+                         <p className="text-center text-primary m-0 fw-bold">
+                             <span style={{ color: "rgb(0, 0, 0)" }}>Formulaire</span>
+                         </p>
+                     </div>
+                     <div className="card-body">
+                         <div className="row" />
+                         <input className="form-control mb-4" type="text" placeholder="Nom du plat" value={nomPlat} onChange={handleNomPlatChange}/>
+                         <input className="form-control mb-4" type="file"  ref={pref}  onChange={(e)=>handleFileUpload(e)}/>
+                         <select className="form-control mb-4" value={selectedPays} onChange={handleSelectChange}>
+                             <option value={0}>Select an option</option>
+                             {pays.map((p,index) => (
+                                 <option key={index} value={p.id}>
+                                     {p.nom+"/"+p.capitale}
+                                 </option>
+                             ))}
+                         </select>
+                         <textarea
+                             className="form-control"
+                             style={{ width: "100%", height: 115, resize: "none" }}
+                             value={recette}
+                             onChange={(e)=>handleTextChange(e)}
+                         />
+                     <div/>
+                         <div className="row mb-2">
+                             <div className="col">
+                                 <div className="mb-3" />
+                                 <button
+                                     className="btn btn-primary btn-sm"
+                                     type="button"
+                                     style={{ margin: 0, marginRight: 0 }} onClick={()=>addPlat()}
+                                 >
+                                     <i className="fas fa-plus" style={{ marginRight: 9 }} />
+                                     Ajouter
+                                 </button>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="text-end mb-3" />
+             </div>
+         </div>
+         <ListPlat/>
 
      </>
   );

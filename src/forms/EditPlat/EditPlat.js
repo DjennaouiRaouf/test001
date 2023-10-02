@@ -96,7 +96,7 @@ const EditPlat = () => {
 
               <input className="form-control mb-4" type="file"ref={pref}  onChange={(e)=>handleFileUpload(e)} />
             <select className="form-control mb-4" value={idpays} onChange={handleSelectChange}>
-              <option value={0}>Select an option</option>
+              <option value={0}>Pays</option>
               {pays.map((p,index) => (
                   <option key={index} value={p.id}>
                     {p.nom+"/"+p.capitale}
