@@ -15,6 +15,7 @@ const FormPlat = () => {
         await axios.get(`${process.env.REACT_APP_API_BASE_URL}/testapp/pays/`)
             .then((response) => {
                 setPays(response.data);
+
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -68,7 +69,7 @@ const FormPlat = () => {
     useEffect(() => {
         getPays();
 
-    });
+    },[pays]);
   return (
      <>
        <div className="container" style={{ marginTop: 52 }}>
@@ -83,8 +84,8 @@ const FormPlat = () => {
             <input className="form-control mb-4" type="file"  ref={pref}  onChange={(e)=>handleFileUpload(e)}/>
             <select className="form-control mb-4" value={selectedPays} onChange={handleSelectChange}>
                <option value={0}>Select an option</option>
-               {pays.map((p) => (
-                   <option key={p.idp} value={p.idp}>
+               {pays.map((p,index) => (
+                   <option key={index} value={p.id}>
                        {p.nom+"/"+p.capitale}
                    </option>
                ))}

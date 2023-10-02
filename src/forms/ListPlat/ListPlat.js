@@ -52,7 +52,7 @@ const ListPlat = () => {
     useEffect(() => {
         getPlats();
 
-    });
+    },[plats]);
 
 
     return (
@@ -89,8 +89,8 @@ const ListPlat = () => {
                     <h4 className="card-title">{item.nom}</h4>
                     <div className="card-text"><ul className="list-group">{parse(item.recettes.replaceAll('-','<li className="list-group-item">').replaceAll('\n','</li>'))}</ul></div>
                       <div className="btn-group mt-4" role="group">
-                          <button className="btn btn-light" type="button" onClick={()=>rmPlat(item.idpl)}><i className="fas fa-minus"></i></button>
-                          <button className="btn btn-primary" type="button" onClick={()=>edit(item.idpl,item.nom,item.photo,item.recettes,item.pays.idp)}><i className="fas fa-edit"></i></button>
+                          <button className="btn btn-light" type="button" onClick={()=>rmPlat(item.id)}><i className="fas fa-minus"></i></button>
+                          <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
                       </div>
 
                   </div>
