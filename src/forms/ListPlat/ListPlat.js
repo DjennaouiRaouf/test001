@@ -132,7 +132,7 @@ const ListPlat = () => {
                                         <img
                                             className="card-img-top w-100 d-block fit-cover"
                                             height={200}
-                                            src= {`${process.env.REACT_APP_API_BASE_URL}`+item.photo}
+                                            src= {item.photo}
                                             alt={""}
                                         />
                                 }
