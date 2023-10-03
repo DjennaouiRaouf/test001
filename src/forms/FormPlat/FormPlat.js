@@ -70,7 +70,7 @@ const FormPlat = () => {
     useEffect(() => {
         getPays();
 
-    });
+    },[]);
   return (
      <>
          <div className="container-fluid">

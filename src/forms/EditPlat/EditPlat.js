@@ -44,7 +44,7 @@ const EditPlat = () => {
 
 
 
-    }, [pays]);
+    }, []);
 
   const toggle = async() => {
       const formData = new FormData();

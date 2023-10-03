@@ -107,7 +107,7 @@ const ListPlat = () => {
         getContinent();
         getPays();
 
-    },[]);
+    },[plats]);
 
 
     return (
@@ -161,19 +161,7 @@ const ListPlat = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="row mb-2">
-                            <div className="col">
-                                <div className="mb-3" />
-                                <button
-                                    className="btn btn-primary btn-sm"
-                                    type="button"
-                                    style={{ margin: 0, marginRight: 0 }} onClick={()=>filter()}
-                                >
-                                    <i className="fas fa-search" style={{ marginRight: 9 }} />
-                                    Recherche
-                                </button>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
                 <div className="text-end mb-3" />
