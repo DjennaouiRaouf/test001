@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {setIdPays, setNom, setRecette, update_modal} from "../../redux-toolkit/slices/EditPlatSlice";
+import {clearForm, setIdPays, setNom, setRecette, update_modal} from "../../redux-toolkit/slices/EditPlatSlice";
 import csrftoken from "../../utils/utils";
 
 const EditPlat = () => {
@@ -11,7 +11,7 @@ const EditPlat = () => {
     const[pays,setPays]=useState([]);
     const {modal,idpl,nom,photo,recette,idpays} = useSelector((state) => state.editplat);
     const [img,setImg]=useState(null)
-    const pref=useRef(null);
+    const mpref=useRef(null);
     const dispatch = useDispatch();
 
 
@@ -48,6 +48,12 @@ const EditPlat = () => {
     }, []);
 
   const toggle = async() => {
+      dispatch(update_modal());
+      dispatch(clearForm());
+  }
+
+  const editPlat = async() => {
+
       const formData = new FormData();
       formData.append('idpl', idpl);
       formData.append('nom',nom);
@@ -65,11 +71,8 @@ const EditPlat = () => {
       }).catch((error) => {
           console.error('Error:', error);
       });
-
-
-      dispatch(update_modal());
-      pref.current.value=null;
-
+      toggle();
+      mpref.current.value=null;
   }
   return (
       <Modal isOpen={modal} toggle={toggle} >
@@ -95,8 +98,7 @@ const EditPlat = () => {
 
               }
 
-
-              <input className="form-control mb-4" type="file"ref={pref}  onChange={(e)=>handleFileUpload(e)} />
+              <input className="form-control mb-4" type="file" ref={mpref}  onChange={(e)=>handleFileUpload(e)} />
             <select className="form-control mb-4" value={idpays} onChange={handleSelectChange}>
               <option value={0}>Pays</option>
               {pays.map((p,index) => (
@@ -114,7 +116,7 @@ const EditPlat = () => {
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>
+          <Button color="primary" onClick={()=>editPlat()}>
             Modifier
           </Button>
 
