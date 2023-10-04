@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ListPlat from "../ListPlat";
+import csrftoken from "../../utils/utils";
 
 const FormPlat = () => {
     const[nomPlat,setNomPlat]=useState("");
@@ -52,6 +53,7 @@ const FormPlat = () => {
         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/testapp/ajouterplat/`,formData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'X-CSRFToken': csrftoken,
             },
         }).then((response) => {
                 console.log('Response:', response);

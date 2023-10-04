@@ -3,6 +3,7 @@ import axios from "axios";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {setIdPays, setNom, setRecette, update_modal} from "../../redux-toolkit/slices/EditPlatSlice";
+import csrftoken from "../../utils/utils";
 
 const EditPlat = () => {
 
@@ -57,6 +58,7 @@ const EditPlat = () => {
       await axios.post(`${process.env.REACT_APP_API_BASE_URL}/testapp/updateplat/`,formData,{
           headers: {
               'Content-Type': 'multipart/form-data',
+              'X-CSRFToken': csrftoken,
           },
       }).then((response) => {
           console.log('Response:', response);
@@ -87,7 +89,7 @@ const EditPlat = () => {
                       <img
                           className="mb-4 mt-4 text-center"
                           style={{ width: "100%", height: 200 }}
-                          src={`${process.env.REACT_APP_API_BASE_URL}`+photo}
+                          src={photo}
                           alt={""}
                       />
 
