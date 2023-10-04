@@ -29,7 +29,7 @@ const ListPlat = () => {
         }else{
             url=url.replaceAll(`&pays__continent=${selectedC}`,"")
         }
-        if(selectedP !== ""){
+        if(selectedP > 0){
             url=url+`&pays=${selectedP}`
         }else{
             url=url.replaceAll(`&pays=${selectedP}`,"")
@@ -44,12 +44,13 @@ const ListPlat = () => {
                 console.error('Error:', error);
             });
     }
-    const handleSelectChange = (e) => {
+    const handleContinentChange = (e) => {
         setSelectedC(e.target.value);
+
 
     }
 
-    const  handleInputChange = (e) => {
+    const  handlePaysChange = (e) => {
         setSelectedP(e.target.value);
 
     }
@@ -62,10 +63,6 @@ const ListPlat = () => {
                 console.error('Error:', error);
             });
 
-    }
-
-    const filter = () => {
-        getPlats()
     }
 
     const edit = (idpl,nom,photo,recettes,idp) => {
@@ -127,8 +124,8 @@ const ListPlat = () => {
                                     <label className="form-label" htmlFor="name_service">
                                         <strong>Continent</strong>
                                     </label>
-                                    <select className="form-control mb-4" value={selectedC} onChange={handleSelectChange}>
-                                        <option value={0}>Select an option</option>
+                                    <select className="form-control mb-4" value={selectedC} onChange={handleContinentChange}>
+                                        <option value={0}>Continent</option>
                                         {continent.map((c,index) => (
                                             <option key={index} value={c.id}>
                                                 {c.nom}
@@ -142,19 +139,16 @@ const ListPlat = () => {
                                     <label className="form-label" htmlFor="price_service">
                                         <strong>Pays</strong>
                                     </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        onChange={handleInputChange}
-                                        placeholder="Pays"
-                                        name="price_service"
-                                        value={selectedP}
-                                        list="browsers"/>
-                                    <datalist id="browsers">
-                                        {pays.map((item,index) => (
-                                            <option key={index} value={item.id}>{item.nom}</option>
-                                            ))}
-                                    </datalist>
+                                    <select className="form-control mb-4" value={selectedP} onChange={handlePaysChange}>
+                                        <option value={0}>Pays</option>
+                                        {pays.map((p,index) => (
+                                            <option key={index} value={p.id}>
+                                                {p.nom}
+                                            </option>
+                                        ))}
+                                    </select>
+
+
 
 
 
