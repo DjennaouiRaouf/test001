@@ -10,7 +10,9 @@ const EditPlat = () => {
 
     const[pays,setPays]=useState([]);
     const {modal,idpl,nom,photo,recette,idpays} = useSelector((state) => state.editplat);
-    const [img,setImg]=useState(null)
+    const [imgDisplay,setImgDisplay]=useState(null)
+    const [imgUpload,setImgUpload]=useState(null)
+
     const mpref=useRef(null);
     const dispatch = useDispatch();
 
@@ -20,7 +22,16 @@ const EditPlat = () => {
   }
   const handleFileUpload=(e)=>{
 
-    setImg(e.target.files[0]);
+      let file=e.target.files[0];
+      setImgUpload(file);
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+              setImgDisplay(event.target.result);
+          };
+          reader.readAsDataURL(file);
+      }
+
 
   }
   const handleSelectChange = (e) => {
@@ -50,6 +61,7 @@ const EditPlat = () => {
   const toggle = async() => {
       dispatch(update_modal());
       dispatch(clearForm());
+
   }
 
   const editPlat = async() => {
@@ -57,7 +69,7 @@ const EditPlat = () => {
       const formData = new FormData();
       formData.append('idpl', idpl);
       formData.append('nom',nom);
-      formData.append('img',img);
+      formData.append('img',imgUpload);
       formData.append('recette',recette);
       formData.append('idpays',idpays);
 
@@ -72,7 +84,7 @@ const EditPlat = () => {
           console.error('Error:', error);
       });
       toggle();
-      mpref.current.value=null;
+
   }
   return (
       <Modal isOpen={modal} toggle={toggle} >
@@ -81,20 +93,14 @@ const EditPlat = () => {
           <div className="container" style={{ marginTop: 10 }}>
             <input className="form-control mb-4" type="text" placeholder="Nom du plat"value={nom} onChange={handleNomPlatChange} />
               {
-                  photo === null ?
-                      <img
-                          className="mb-4 mt-4 text-center"
-                          style={{ width: "100%", height: 200 }}
-                          src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
-                          alt={""}
-                      />
-                      :
-                      <img
-                          className="mb-4 mt-4 text-center"
-                          style={{ width: "100%", height: 200 }}
-                          src={photo}
-                          alt={""}
-                      />
+                  imgDisplay !== null &&
+                  <img
+                      className="mb-4 mt-4 text-center"
+                      style={{ width: "100%", height: 200 }}
+                      src={imgDisplay}
+                      alt={""}
+                  />
+
 
               }
 
