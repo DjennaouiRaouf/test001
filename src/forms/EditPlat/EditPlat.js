@@ -61,6 +61,9 @@ const EditPlat = () => {
   const toggle = async() => {
       dispatch(update_modal());
       dispatch(clearForm());
+      mpref.current.value=null;
+      setImgDisplay(null);
+      setImgUpload(null)
 
   }
 
