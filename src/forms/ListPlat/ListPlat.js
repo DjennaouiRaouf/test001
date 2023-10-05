@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import axios from "axios";
 import EditPlat from "../EditPlat";
 
+
 import {
     setId,
     setIdPays,
@@ -12,6 +13,7 @@ import {
     setRecette,
     update_modal
 } from "../../redux-toolkit/slices/EditPlatSlice";
+import ExcelJS from 'exceljs';
 
 const ListPlat = () => {
     const dispatch = useDispatch();
@@ -106,6 +108,51 @@ const ListPlat = () => {
 
     },[plats]);
 
+    const imprimer = async() => {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
+        // Define your data
+
+        let data=[];
+        const tmp =plats;
+        for( const obj of tmp){
+            obj.pays= obj.pays.nom;
+        }
+
+        let rows=[] ;
+        let columns=[] ;
+        for( const e of Object.keys(tmp[0])){
+            columns.push(e);
+        }
+        data.push(columns);
+        for( const e of tmp){
+            const l = Object.values(e);
+            data.push(l)
+        }
+
+
+
+        data.forEach(rowData => {
+            worksheet.addRow(rowData);
+        });
+
+
+        const blob = await workbook.xlsx.writeBuffer();
+        const blobUrl = URL.createObjectURL(new Blob([blob]));
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'data.xlsx';
+        a.click();
+        URL.revokeObjectURL(blobUrl);
+
+
+    };
+
+
+
+
+
 
     return (
         <div className="container-fluid">
@@ -147,12 +194,20 @@ const ListPlat = () => {
                                             </option>
                                         ))}
                                     </select>
-
-
+                                </div>
+                                <div className="col">
+                                    <div className="mb-3" />
+                                    <button className="btn btn-primary btn-sm"
+                                                     style={{ margin: 0, marginRight: 0 }}
+                                                     onClick={()=>imprimer()}>
+                                        <i className="fas fa-print" style={{ marginRight: 9 }} />
+                                        Imprimer
+                                    </button>
 
 
 
                                 </div>
+
                             </div>
                         </div>
 
@@ -178,7 +233,7 @@ const ListPlat = () => {
                                         <img
                                             className="card-img-top w-100 d-block fit-cover"
                                             height={200}
-                                            src= {item.photo}
+                                            src= {item.photo.file}
                                             alt={""}
                                         />
                                 }
@@ -189,7 +244,7 @@ const ListPlat = () => {
                                     <div className="card-text"><ul className="list-group">{parse(item.recettes.replaceAll('-','<li className="list-group-item">').replaceAll('\n','</li>'))}</ul></div>
                                     <div className="btn-group mt-4" role="group">
                                         <button className="btn btn-light" type="button" onClick={()=>rmPlat(item.id)}><i className="fas fa-minus"></i></button>
-                                        <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
+                                        <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo.file,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
                                     </div>
 
                                 </div>
@@ -200,6 +255,7 @@ const ListPlat = () => {
 
 
                 </div>
+
             </div>
         </div>
 
