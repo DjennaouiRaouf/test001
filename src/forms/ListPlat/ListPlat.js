@@ -233,7 +233,7 @@ const ListPlat = () => {
                                         <img
                                             className="card-img-top w-100 d-block fit-cover"
                                             height={200}
-                                            src= {item.photo.file}
+                                            src= {item.photo}
                                             alt={""}
                                         />
                                 }
@@ -244,7 +244,7 @@ const ListPlat = () => {
                                     <div className="card-text"><ul className="list-group">{parse(item.recettes.replaceAll('-','<li className="list-group-item">').replaceAll('\n','</li>'))}</ul></div>
                                     <div className="btn-group mt-4" role="group">
                                         <button className="btn btn-light" type="button" onClick={()=>rmPlat(item.id)}><i className="fas fa-minus"></i></button>
-                                        <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo.file,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
+                                        <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
                                     </div>
 
                                 </div>
