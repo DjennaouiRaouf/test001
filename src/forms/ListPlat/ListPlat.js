@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import parse from 'html-react-parser';
 import axios from "axios";
 import EditPlat from "../EditPlat";
-
+import ModalImage from "react-modal-image";
 
 import {
     setId,
@@ -14,6 +14,7 @@ import {
     update_modal
 } from "../../redux-toolkit/slices/EditPlatSlice";
 import ExcelJS from 'exceljs';
+import {handleShow} from "../../redux-toolkit/slices/FormPlatSlice";
 
 const ListPlat = () => {
     const dispatch = useDispatch();
@@ -150,8 +151,12 @@ const ListPlat = () => {
     };
 
 
-
-
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const ajouter = () => {
+        dispatch(handleShow())
+    }
 
 
     return (
@@ -215,48 +220,100 @@ const ListPlat = () => {
                 </div>
                 <div className="text-end mb-3" />
             </div>
-            <div className="container py-4 py-xl-5">
-                <div className="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
-                    {plats.map((item,index) => (
-                        <div className="col" key={index}>
 
-                            <div className="card">
-                                {
-                                    item.photo === null  ?
-                                        <img
-                                            className="card-img-top w-100 d-block fit-cover"
-                                            style={{ height: 200 }}
-                                            src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
-                                            alt={""}
-                                        />
-                                        :
-                                        <img
-                                            className="card-img-top w-100 d-block fit-cover"
-                                            height={200}
-                                            src= {item.photo}
-                                            alt={""}
-                                        />
-                                }
 
-                                <div className="card-body p-4">
-                                    <p className="text-primary card-text mb-0">{item.pays.nom}</p>
-                                    <h4 className="card-title">{item.nom}</h4>
-                                    <div className="card-text"><ul className="list-group">{parse(item.recettes.replaceAll('-','<li className="list-group-item">').replaceAll('\n','</li>'))}</ul></div>
-                                    <div className="btn-group mt-4" role="group">
-                                        <button className="btn btn-light" type="button" onClick={()=>rmPlat(item.id)}><i className="fas fa-minus"></i></button>
-                                        <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
+            <div id="wrapper mb-4">
+                <div id="content-wrapper" className="d-flex flex-column">
+                    <div id="content">
+                        <div className="container-fluid">
+                            <div className="card shadow">
+                                <div className="card-header d-flex py-3">
+                                    <p
+                                        className="lead text-start text-primary d-xl-flex justify-content-xl-start m-0 fw-bold"
+                                        style={{ width: "100%" }}
+                                    >
+                                        Plats&nbsp;
+                                    </p>
+                                    <button className="btn btn-primary btn-sm" type="button" onClick={()=>ajouter()}>
+                                        Ajouter
+                                    </button>
+                                </div>
+                                <div className="card-body">
+                                    <div
+                                        id="dataTable"
+                                        className="table-responsive table mt-2"
+                                        role="grid"
+                                        aria-describedby="dataTable_info"
+                                    >
+                                        <table id="dataTable" className="table my-0">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>nom</th>
+                                                <th>Pays</th>
+                                                <th>photo</th>
+                                                <th>Recette</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {plats.map((item,index) => (
+                                            <tr key={index}>
+                                                <td>{item.id}</td>
+                                                <td>{item.nom}</td>
+                                                <td>{item.pays.nom}</td>
+                                                <td width={100}>
+                                                    {
+                                                        item.photo !== null  &&
+
+                                                        <ModalImage
+                                                            small={item.photo}
+                                                            large={item.photo}
+                                                            alt=""
+
+                                                        />
+                                                    }
+                                                </td>
+                                                <td>{parse(item.recettes.replaceAll('-','<li className="list-group-item">').replaceAll('\n','</li>'))}</td>
+                                                <td>
+                                                <div className="btn-group mt-4" role="group">
+                                                    <button className="btn btn-light" type="button" onClick={()=>rmPlat(item.id)}><i className="fas fa-minus"></i></button>
+                                                    <button className="btn btn-primary" type="button" onClick={()=>edit(item.id,item.nom,item.photo,item.recettes,item.pays.id)}><i className="fas fa-edit"></i></button>
+                                                </div>
+                                                </td>
+
+
+                                            </tr>
+                                            ))}
+                                            </tbody>
+                                            <tfoot>
+                                            <tr />
+                                            </tfoot>
+                                        </table>
                                     </div>
-
                                 </div>
                             </div>
-                            <EditPlat/>
                         </div>
-                    ))}
-
-
+                    </div>
+                    <footer className="bg-white sticky-footer" />
                 </div>
 
             </div>
+            <EditPlat/>
+            <button onClick={scrollToTop} className="btn btn-primary pulse-grow-on-hover pulse" type="button" style={{"fontSize": "20px",
+
+                "borderRadius": "15px",
+                "position": "fixed",
+                "bottom": "20px",
+                "left": "30px",
+                "zIndex": "99"}}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white"
+                     className="bi bi-arrow-up" viewBox="0 0 16 16">
+                    <path fillRule="evenodd"
+                          d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                </svg>
+            </button>
+
         </div>
 
 

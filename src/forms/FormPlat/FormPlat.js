@@ -4,7 +4,9 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ListPlat from "../ListPlat";
 import csrftoken from "../../utils/utils";
-
+import Modal from 'react-bootstrap/Modal';
+import {useDispatch, useSelector} from "react-redux";
+import {handleClose} from "../../redux-toolkit/slices/FormPlatSlice";
 const FormPlat = () => {
     const[nomPlat,setNomPlat]=useState("");
     const[recette,setRecette]=useState("");
@@ -64,6 +66,7 @@ const FormPlat = () => {
         pref.current.value=null;
         setSelectedPays(0);
         setRecette("");
+        close();
 
 
 
@@ -73,55 +76,73 @@ const FormPlat = () => {
         getPays();
 
     },[]);
-  return (
+
+
+    const dispatch = useDispatch();
+    const {toggle} = useSelector((state) => state.fplat);
+    const close = () => {
+      dispatch(handleClose());
+    }
+    return (
      <>
-         <div className="container-fluid">
-             <div className="d-sm-flex justify-content-between align-items-center mb-4" />
-             <div>
-                 <div className="card shadow mb-3">
-                     <div className="card-header py-3">
-                         <p className="text-center text-primary m-0 fw-bold">
-                             <span style={{ color: "rgb(0, 0, 0)" }}>Formulaire</span>
-                         </p>
-                     </div>
-                     <div className="card-body">
-                         <div className="row" />
-                         <input className="form-control mb-4" type="text" placeholder="Nom du plat" value={nomPlat} onChange={handleNomPlatChange}/>
-                         <input className="form-control mb-4" type="file"  ref={pref}  onChange={(e)=>handleFileUpload(e)}/>
-                         <select className="form-control mb-4" value={selectedPays} onChange={handleSelectChange}>
-                             <option value={0}>Select an option</option>
-                             {pays.map((p,index) => (
-                                 <option key={index} value={p.id}>
-                                     {p.nom+"/"+p.capitale}
-                                 </option>
-                             ))}
-                         </select>
-                         <textarea
-                             className="form-control"
-                             style={{ width: "100%", height: 115, resize: "none" }}
-                             value={recette}
-                             onChange={(e)=>handleTextChange(e)}
-                         />
-                     <div/>
-                         <div className="row mb-2">
-                             <div className="col">
-                                 <div className="mb-3" />
-                                 <button
-                                     className="btn btn-primary btn-sm"
-                                     type="button"
-                                     style={{ margin: 0, marginRight: 0 }} onClick={()=>addPlat()}
-                                 >
-                                     <i className="fas fa-plus" style={{ marginRight: 9 }} />
-                                     Ajouter
-                                 </button>
+
+         <Modal
+             show={toggle}
+             onHide={close}
+             animation={false}
+         >
+
+             <Modal.Body >
+                 <div className="container-fluid">
+                     <div className="d-sm-flex justify-content-between align-items-center mb-4" />
+                     <div>
+                         <div className="card  mb-3 " style={{border:"none"}} >
+                             <div className="card-body">
+                                 <div className="row" />
+                                 <input className="form-control mb-4" type="text" placeholder="Nom du plat" value={nomPlat} onChange={handleNomPlatChange}/>
+                                 <input className="form-control mb-4" type="file"  ref={pref}  onChange={(e)=>handleFileUpload(e)}/>
+                                 <select className="form-control mb-4" value={selectedPays} onChange={handleSelectChange}>
+                                     <option value={0}>Select an option</option>
+                                     {pays.map((p,index) => (
+                                         <option key={index} value={p.id}>
+                                             {p.nom+"/"+p.capitale}
+                                         </option>
+                                     ))}
+                                 </select>
+                                 <textarea
+                                     className="form-control"
+                                     style={{ width: "100%", height: 115, resize: "none" }}
+                                     value={recette}
+                                     onChange={(e)=>handleTextChange(e)}
+                                 />
+                                 <div/>
+
                              </div>
                          </div>
+                         <div className="text-end mb-3" />
                      </div>
                  </div>
-                 <div className="text-end mb-3" />
-             </div>
-         </div>
-         <ListPlat/>
+
+             </Modal.Body>
+             <Modal.Footer>
+                 <div className="row mb-2">
+                     <div className="col">
+                         <div className="mb-3" />
+                         <button
+                             className="btn btn-primary btn-sm"
+                             type="button"
+                             style={{ margin: 0, marginRight: 0 }} onClick={()=>addPlat()}
+                         >
+                             <i className="fas fa-plus" style={{ marginRight: 9 }} />
+                             Ajouter
+                         </button>
+                     </div>
+                 </div>
+
+             </Modal.Footer>
+         </Modal>
+
+         <ListPlat />
 
      </>
   );
