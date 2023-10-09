@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {clearForm, setIdPays, setNom, setRecette, update_modal} from "../../redux-toolkit/slices/EditPlatSlice";
 import csrftoken from "../../utils/utils";
 
+
+
 const EditPlat = () => {
 
 

@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect,  useState} from "react";
 import {useDispatch} from "react-redux";
 import parse from 'html-react-parser';
 import axios from "axios";
 import EditPlat from "../EditPlat";
 import ModalImage from "react-modal-image";
-
 import {
     setId,
     setIdPays,
@@ -13,8 +12,10 @@ import {
     setRecette,
     update_modal
 } from "../../redux-toolkit/slices/EditPlatSlice";
-import ExcelJS from 'exceljs';
 import {handleShow} from "../../redux-toolkit/slices/FormPlatSlice";
+
+import {useNavigate} from "react-router-dom";
+
 
 const ListPlat = () => {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const ListPlat = () => {
     const[selectedC,setSelectedC]=useState(0);
     const[selectedP,setSelectedP]=useState("");
     const[pays,setPays]=useState([]);
+    const navigate = useNavigate();
     const getPlats=async()=> {
         let url=`${process.env.REACT_APP_API_BASE_URL}/testapp/plat/?format=json`;
 
@@ -109,46 +111,6 @@ const ListPlat = () => {
 
     },[plats]);
 
-    const imprimer = async() => {
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Sheet1');
-
-        // Define your data
-
-        let data=[];
-        const tmp =plats;
-        for( const obj of tmp){
-            obj.pays= obj.pays.nom;
-        }
-
-        let rows=[] ;
-        let columns=[] ;
-        for( const e of Object.keys(tmp[0])){
-            columns.push(e);
-        }
-        data.push(columns);
-        for( const e of tmp){
-            const l = Object.values(e);
-            data.push(l)
-        }
-
-
-
-        data.forEach(rowData => {
-            worksheet.addRow(rowData);
-        });
-
-
-        const blob = await workbook.xlsx.writeBuffer();
-        const blobUrl = URL.createObjectURL(new Blob([blob]));
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = 'data.xlsx';
-        a.click();
-        URL.revokeObjectURL(blobUrl);
-
-
-    };
 
 
     const scrollToTop = () => {
@@ -159,6 +121,11 @@ const ListPlat = () => {
     }
 
 
+
+    const preview = () => {
+
+        navigate('/view', {state:{ data: plats }});
+    }
     return (
         <div className="container-fluid">
             <div className="d-sm-flex justify-content-between align-items-center mb-4" />
@@ -202,12 +169,20 @@ const ListPlat = () => {
                                 </div>
                                 <div className="col">
                                     <div className="mb-3" />
-                                    <button className="btn btn-primary btn-sm"
-                                                     style={{ margin: 0, marginRight: 0 }}
-                                                     onClick={()=>imprimer()}>
+                                    {
+                                        /*
+                                         <PDFDownloadLink className="btn btn-primary btn-sm"
+                                                     style={{ margin: 0, marginRight: 0 }} document={<MyDocument />} fileName="example.pdf">
                                         <i className="fas fa-print" style={{ marginRight: 9 }} />
                                         Imprimer
-                                    </button>
+                                    </PDFDownloadLink>
+                                        */
+                                    }
+                                    <button className="btn btn-primary btn-sm"
+                                            style={{ margin: 0, marginRight: 0 }} onClick={()=> preview()} >
+                                        <i className="fas fa-print" style={{ marginRight: 9 }} />
+                                        Imprimer</button>
+
 
 
 
@@ -245,7 +220,7 @@ const ListPlat = () => {
                                         role="grid"
                                         aria-describedby="dataTable_info"
                                     >
-                                        <table id="dataTable" className="table my-0">
+                                        <table className="table my-0">
                                             <thead>
                                             <tr>
                                                 <th>ID</th>
@@ -284,6 +259,7 @@ const ListPlat = () => {
 
 
                                             </tr>
+
                                             ))}
                                             </tbody>
                                             <tfoot>
@@ -313,6 +289,7 @@ const ListPlat = () => {
                           d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
                 </svg>
             </button>
+
 
         </div>
 
